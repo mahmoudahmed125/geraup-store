@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gear Up Store | إكسسوارات سيارات</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Cairo,Tahoma,sans-serif;background:#070707;color:#f4f1ea}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px 80px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.mark{background:#e10600;color:#fff;font-family:Oswald,sans-serif;font-weight:700;padding:8px 14px;clip-path:polygon(0 0,100% 0,86% 100%,0 100%)}
+.stage{position:relative;overflow:hidden;border:1px solid #2a2a2a;border-radius:28px;padding:36px 24px;margin-bottom:22px;background:radial-gradient(ellipse at 70% 0%,rgba(225,6,0,.35),transparent 46%),#121212}
+h1{font-family:Oswald,sans-serif;font-size:clamp(40px,7vw,72px);line-height:1.05}
+h1 span{color:#e10600}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:#121212;border:1px solid #2a2a2a;border-radius:20px;overflow:hidden;box-shadow:0 18px 36px rgba(0,0,0,.45)}
+.shot{aspect-ratio:4/3;background:#1c1c1c;display:grid;place-items:center;color:#a39e96;text-align:center;padding:12px;font-size:13px}
+.car{color:#e10600;font-size:12px;font-weight:800;margin:12px 14px 0}
+h2{padding:0 14px}
+.price{font-size:28px;font-weight:900;padding:0 14px}
+.price span{font-size:13px;color:#a39e96}
+.cta{display:block;margin:12px 14px 14px;background:#e10600;color:#fff;text-align:center;font-weight:900;border-radius:12px;padding:10px}
+form{margin-top:22px;border:1px solid #2a2a2a;background:#121212;border-radius:20px;padding:16px}
+label{display:grid;gap:6px;font-weight:800;font-size:14px;margin-bottom:10px}
+input,textarea{background:#070707;color:#f4f1ea;border:1px solid #2a2a2a;border-radius:12px;padding:12px;font:inherit}
+button{background:#e10600;color:#fff;border:0;border-radius:12px;padding:12px 16px;font-weight:900;cursor:pointer}
+.ok{display:none;margin-top:10px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="mark">GEAR UP</div><strong>STORE</strong></header>
+<section class="stage"><h1>CAR<br><span>ACCESSORIES</span></h1><p style="color:#a39e96;margin-top:8px">شبكات، دفيوزر، اسبويلر وكفرات مرايا. الأسعار بالجنيه.</p></section>
+<section class="grid">
+<article class="card"><div class="shot">BMW G30</div><p class="car">BMW G30</p><h2>شبكة دبل ريشة</h2><p class="price">1950 <span>ج.م</span></p><a class="cta" href="#order" data-item="شبكة دبل ريشة — BMW G30" data-price="1950">اطلب الآن</a></article>
+<article class="card"><div class="shot">BMW G20 / G30</div><p class="car">BMW G20 / G30</p><h2>كفر مرايا</h2><p class="price">1900 <span>ج.م</span></p><a class="cta" href="#order" data-item="كفر مرايا — BMW G20 / G30" data-price="1900">اطلب الآن</a></article>
+<article class="card"><div class="shot">BMW G20</div><p class="car">BMW G20</p><h2>اسبويلر</h2><p class="price">1900 <span>ج.م</span></p><a class="cta" href="#order" data-item="اسبويلر — BMW G20" data-price="1900">اطلب الآن</a></article>
+<article class="card"><div class="shot">BMW G20</div><p class="car">BMW G20</p><h2>دفيوزر</h2><p class="price">7500 <span>ج.م</span></p><a class="cta" href="#order" data-item="دفيوزر — BMW G20" data-price="7500">اطلب الآن</a></article>
+<article class="card"><div class="shot">BMW F30</div><p class="car">BMW F30</p><h2>دفيوزر</h2><p class="price">1950 <span>ج.م</span></p><a class="cta" href="#order" data-item="دفيوزر — BMW F30" data-price="1950">اطلب الآن</a></article>
+<article class="card"><div class="shot">BMW F30</div><p class="car">BMW F30</p><h2>اسبويلر</h2><p class="price">1800 <span>ج.م</span></p><a class="cta" href="#order" data-item="اسبويلر — BMW F30" data-price="1800">اطلب الآن</a></article>
+<article class="card"><div class="shot">Golf 7</div><p class="car">Golf 7</p><h2>اسبويلر</h2><p class="price">1950 <span>ج.م</span></p><a class="cta" href="#order" data-item="اسبويلر — Golf 7" data-price="1950">اطلب الآن</a></article>
+<article class="card"><div class="shot">MG 6</div><p class="car">MG 6</p><h2>دفيوزر</h2><p class="price">2900 <span>ج.م</span></p><a class="cta" href="#order" data-item="دفيوزر — MG 6" data-price="2900">اطلب الآن</a></article>
+<article class="card"><div class="shot">Cupra Formentor</div><p class="car">Cupra Formentor</p><h2>اسبويلر</h2><p class="price">3500 <span>ج.م</span></p><a class="cta" href="#order" data-item="اسبويلر — Cupra Formentor" data-price="3500">اطلب الآن</a></article>
+<article class="card"><div class="shot">شفتات</div><p class="car">متعدد</p><h2>شفتات طارة</h2><p class="price">1300 <span>ج.م</span></p><a class="cta" href="#order" data-item="شفتات طارة" data-price="1300">اطلب الآن</a></article>
+<article class="card"><div class="shot">Cupra</div><p class="car">Cupra</p><h2>كفر مرايا</h2><p class="price">1300 <span>ج.م</span></p><a class="cta" href="#order" data-item="كفر مرايا — Cupra" data-price="1300">اطلب الآن</a></article>
+</section>
+<form id="order">
+  <h2>تسجيل الطلب</h2>
+  <p id="picked" style="color:#a39e96;margin:8px 0">اختار قطعة الأول</p>
+  <label>الاسم<input name="name" required></label>
+  <label>رقم الهاتف<input name="phone" required inputmode="tel"></label>
+  <label>العنوان<textarea name="address" required></textarea></label>
+  <button type="submit">تأكيد الطلب</button>
+  <p class="ok" id="ok">تم تسجيل الطلب.</p>
+</form>
+</div>
+<script>
+const picked=document.getElementById("picked");
+let item="",price="";
+document.querySelectorAll(".cta").forEach(a=>a.addEventListener("click",()=>{item=a.dataset.item;price=a.dataset.price;picked.textContent=item+" — "+price+" ج.م";}));
+document.getElementById("order").addEventListener("submit",e=>{e.preventDefault();if(!item){picked.textContent="اختار قطعة من فوق";return;}const fd=new FormData(e.target);const orders=JSON.parse(localStorage.getItem("gear-orders")||"[]");orders.push({item,price,name:fd.get("name"),phone:fd.get("phone"),address:fd.get("address"),at:new Date().toISOString()});localStorage.setItem("gear-orders",JSON.stringify(orders));document.getElementById("ok").style.display="block";e.target.reset();});
+</script>
+</body>
+</html>
