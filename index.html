@@ -19,295 +19,178 @@
     --ink: #fff7f4;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: Cairo, Tahoma, sans-serif;
-    background: var(--bg);
-    color: var(--fg);
-    line-height: 1.45;
-  }
+  body { font-family: Cairo, Tahoma, sans-serif; background: var(--bg); color: var(--fg); line-height: 1.45; }
   button, a { font: inherit; }
   button { cursor: pointer; }
   img { display: block; max-width: 100%; }
+  .app { display: grid; grid-template-columns: minmax(0, 1fr) 300px; min-height: 100vh; }
   .top {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 10px 16px;
-    background: rgba(7, 7, 7, 0.94);
+    position: sticky; top: 0; z-index: 5;
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; background: rgba(7,7,7,.94);
     border-bottom: 1px solid var(--line);
-    backdrop-filter: blur(10px);
   }
-  .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
   .mark {
-    background: var(--red);
-    color: var(--ink);
-    font-family: Oswald, Cairo, sans-serif;
-    letter-spacing: 0.04em;
-    padding: 7px 12px;
-    clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
+    background: var(--red); color: var(--ink);
+    font-family: Oswald, Cairo, sans-serif; letter-spacing: .04em;
+    padding: 7px 12px; clip-path: polygon(0 0, 100% 0, 88% 100%, 0 100%);
   }
-  .brand small { display: block; color: var(--muted); font-size: 12px; }
-  .cart-btn {
-    position: relative;
-    min-width: 48px;
-    min-height: 48px;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: var(--surface);
-    color: var(--fg);
-    display: grid;
-    place-items: center;
-  }
-  .badge {
-    position: absolute;
-    top: -6px;
-    left: -6px;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 5px;
-    border-radius: 999px;
-    background: var(--red);
-    color: var(--ink);
-    font-size: 12px;
-    font-weight: 800;
-    display: none;
-    place-items: center;
-  }
-  .badge.show { display: grid; }
-  .wrap { width: min(1120px, 100%); margin: 0 auto; padding: 16px 16px 96px; }
+  .top small { display: block; color: var(--muted); font-size: 12px; }
+  .wrap { width: min(860px, 100%); margin: 0 auto; padding: 16px 16px 88px; }
   .hero {
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 20px 16px;
-    margin-bottom: 14px;
-    background:
-      radial-gradient(circle at 100% 0%, rgba(225, 6, 0, 0.35), transparent 42%),
-      var(--surface);
+    border: 1px solid var(--line); border-radius: 20px; padding: 18px 16px; margin-bottom: 12px;
+    background: radial-gradient(circle at 100% 0%, rgba(225,6,0,.32), transparent 42%), var(--surface);
   }
-  .hero h1 {
-    font-family: Oswald, Cairo, sans-serif;
-    font-size: clamp(32px, 9vw, 56px);
-    line-height: 1.05;
-    letter-spacing: 0.02em;
-  }
+  .hero h1 { font-family: Oswald, Cairo, sans-serif; font-size: clamp(30px, 8vw, 52px); line-height: 1.05; }
   .hero h1 span { color: var(--red); }
-  .hero p { color: var(--muted); margin-top: 8px; max-width: 36rem; }
+  .hero p { color: var(--muted); margin-top: 8px; }
   .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; }
-  .chip {
-    flex: 0 0 auto;
-    min-height: 40px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    color: var(--muted);
-    padding: 8px 14px;
-    font-weight: 800;
-  }
+  .chip { flex: 0 0 auto; min-height: 40px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); padding: 8px 14px; font-weight: 800; }
   .chip.on { background: var(--red); color: var(--ink); border-color: var(--red); }
-  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-  }
-  .shot { aspect-ratio: 1 / 1; background: #1b1b1b; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
+  .shot { aspect-ratio: 4 / 3; background: #1b1b1b; }
   .shot img { width: 100%; height: 100%; object-fit: cover; }
-  .plate {
-    height: 100%;
-    display: grid;
-    place-items: center;
-    text-align: center;
-    padding: 10px;
-    background:
-      linear-gradient(160deg, rgba(225, 6, 0, 0.2), transparent 45%),
-      #1b1b1b;
-  }
+  .plate { height: 100%; display: grid; place-items: center; text-align: center; padding: 10px; background: linear-gradient(160deg, rgba(225,6,0,.2), transparent 45%), #1b1b1b; }
   .plate b { display: block; font-family: Oswald, Cairo, sans-serif; font-size: 22px; }
   .plate span { color: var(--muted); font-size: 12px; }
   .body { padding: 10px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
   .car { color: var(--red); font-size: 12px; font-weight: 800; }
-  .body h2 { font-size: 15px; line-height: 1.35; }
+  .body h2 { font-size: 16px; line-height: 1.35; }
   .price { font-size: 18px; font-weight: 800; margin-top: auto; }
-  .price span { font-size: 12px; color: var(--muted); font-weight: 700; }
-  .add {
-    margin-top: 8px;
-    min-height: 44px;
-    border: 0;
-    border-radius: 12px;
-    background: var(--red);
-    color: var(--ink);
-    font-weight: 800;
+  .price span, .muted { color: var(--muted); font-size: 12px; font-weight: 700; }
+  .add { margin-top: 8px; min-height: 44px; border: 0; border-radius: 12px; background: var(--red); color: var(--ink); font-weight: 800; }
+  .side {
+    position: sticky; top: 0; height: 100vh;
+    background: #101010; border-inline-start: 1px solid var(--line);
+    display: flex; flex-direction: column; z-index: 15;
   }
-  .wa {
-    position: fixed;
-    z-index: 25;
-    left: 14px;
-    bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 48px;
-    padding: 0 14px;
-    border-radius: 999px;
-    background: #128c3e;
-    color: white;
-    font-weight: 800;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
-  }
-  .shade {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.62);
-    z-index: 30;
-    display: none;
-  }
-  .shade.open { display: block; }
-  .drawer {
-    position: fixed;
-    z-index: 31;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: min(420px, 100%);
-    background: var(--bg);
-    border-right: 1px solid var(--line);
-    transform: translateX(-105%);
-    transition: transform 0.2s ease;
-    display: flex;
-    flex-direction: column;
-  }
-  .drawer.open { transform: none; }
-  .drawer head, .d-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--line);
-  }
-  .d-head button, .icon-btn {
-    min-width: 44px;
-    min-height: 44px;
-    border-radius: 12px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    color: var(--fg);
-  }
-  .lines { flex: 1; overflow: auto; padding: 12px 16px; }
-  .line {
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .thumb { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; background: #1b1b1b; }
+  .side-head, .side-foot { padding: 14px; border-bottom: 1px solid var(--line); }
+  .side-foot { border-bottom: 0; border-top: 1px solid var(--line); display: grid; gap: 8px; }
+  .side-head { display: flex; justify-content: space-between; align-items: center; font-weight: 800; }
+  .count { min-width: 28px; height: 28px; border-radius: 999px; background: var(--red); color: var(--ink); display: grid; place-items: center; font-size: 13px; }
+  .lines { flex: 1; overflow: auto; padding: 8px 14px; }
+  .line { display: grid; grid-template-columns: 56px 1fr; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .thumb { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; background: #1b1b1b; }
   .qty { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
-  .qty button {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    color: var(--fg);
-  }
-  .pay {
-    padding: 12px 16px 16px;
-    border-top: 1px solid var(--line);
-    display: grid;
-    gap: 8px;
-  }
-  .pay label { display: grid; gap: 4px; font-size: 13px; font-weight: 800; }
-  .pay input, .pay textarea {
-    width: 100%;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    color: var(--fg);
-    border-radius: 12px;
-    padding: 12px;
-    font: inherit;
-  }
-  .pay textarea { min-height: 56px; resize: vertical; }
-  .pay { max-height: 48vh; overflow: auto; }
+  .qty button { width: 36px; height: 36px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); }
   .total { display: flex; justify-content: space-between; font-weight: 800; }
-  .go {
-    min-height: 48px;
-    border: 0;
-    border-radius: 12px;
-    background: var(--red);
-    color: var(--ink);
-    font-weight: 800;
+  .done, .go { min-height: 48px; border: 0; border-radius: 12px; background: var(--red); color: var(--ink); font-weight: 800; }
+  .empty { color: var(--muted); padding: 16px 0; }
+  .x { display: none; min-width: 40px; min-height: 40px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); }
+  .sheet {
+    position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.62);
+    display: none; align-items: flex-end; justify-content: center;
   }
+  .sheet.open { display: flex; }
+  .box {
+    width: min(480px, 100%); background: var(--bg); border: 1px solid var(--line);
+    border-radius: 18px 18px 0 0; padding: 16px; display: grid; gap: 8px;
+  }
+  .box h2 { font-size: 18px; }
+  .box label { display: grid; gap: 4px; font-size: 13px; font-weight: 800; }
+  .box input, .box textarea {
+    width: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+    border-radius: 12px; padding: 12px; font: inherit;
+  }
+  .box textarea { min-height: 72px; resize: vertical; }
   .err { color: #ffb4a8; font-size: 13px; min-height: 1.2em; }
-  .empty { color: var(--muted); padding: 24px 0; }
+  .wa {
+    position: fixed; z-index: 25; inset-inline-start: 14px; bottom: 14px;
+    width: 52px; height: 52px; border-radius: 50%; background: #128c3e; color: white;
+    display: grid; place-items: center; box-shadow: 0 10px 24px rgba(0,0,0,.4);
+  }
   .toast {
-    position: fixed;
-    z-index: 40;
-    right: 16px;
-    bottom: 16px;
-    background: var(--fg);
-    color: var(--bg);
-    font-weight: 800;
-    border-radius: 12px;
-    padding: 12px 14px;
-    display: none;
+    position: fixed; z-index: 45; inset-inline-start: 16px; bottom: 76px;
+    background: var(--fg); color: var(--bg); font-weight: 800; border-radius: 12px; padding: 12px 14px; display: none;
+  }
+  @media (min-width: 700px) {
+    .grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .hero { padding: 28px; }
+  }
+  .short { display: none; }
+  @media (max-width: 799px) {
+    .app { display: block; }
+    .wrap { padding-inline-end: 112px; padding-bottom: 24px; }
+    .grid { grid-template-columns: 1fr; }
+    .long { display: none; }
+    .short { display: inline; }
+    .side {
+      position: fixed;
+      top: 74px;
+      bottom: 16px;
+      inset-inline-end: 8px;
+      width: 96px;
+      height: auto;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.45);
+      align-items: center;
+      padding-top: 8px;
+    }
+    .lines, .total, .side-head strong { display: none; }
+    .side-head, .side-foot { border: 0; padding: 8px; width: 100%; }
+    .side-foot { margin-top: auto; }
+    .done { min-height: 48px; }
+    .side.open {
+      top: 0; bottom: 0; inset-inline-end: 0; width: min(100%, 380px);
+      height: 100vh; border-radius: 0; align-items: stretch;
+    }
+    .side.open .long { display: inline; }
+    .side.open .short { display: none; }
+    .side.open .lines, .side.open .total, .side.open .side-head strong, .side.open .x { display: block; }
+    .side.open .side-head { display: flex; }
   }
   @media (min-width: 800px) {
-    .grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .hero { padding: 36px 32px; }
-    .body h2 { font-size: 18px; }
-  }
-  @media (max-width: 360px) {
-    .grid { grid-template-columns: 1fr; }
+    .sheet { align-items: center; }
+    .box { border-radius: 18px; }
   }
 </style>
 </head>
 <body>
-<header class="top">
-  <div class="brand">
-    <div class="mark">GEAR UP</div>
-    <div><strong>STORE</strong><small>إكسسوارات سيارات</small></div>
+<div class="app">
+  <div class="shop">
+    <header class="top">
+      <div class="mark">GEAR UP</div>
+      <div><strong>STORE</strong><small>إكسسوارات سيارات</small></div>
+    </header>
+    <main class="wrap">
+      <section class="hero">
+        <h1>CAR<br><span>ACCESSORIES</span></h1>
+        <p>ضيف كل القطع للسلة. الاسم والعنوان في الآخر مرة واحدة.</p>
+      </section>
+      <div class="chips" id="chips"></div>
+      <section class="grid" id="grid"></section>
+    </main>
   </div>
-  <button class="cart-btn" id="openCart" type="button" aria-label="السلة">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6h15l-1.5 9h-12z"/><path d="M6 6 5 3H2"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
-    <span class="badge" id="badge">0</span>
-  </button>
-</header>
-<main class="wrap">
-  <section class="hero">
-    <h1>CAR<br><span>ACCESSORIES</span></h1>
-    <p>اختار القطع، ضيفها للسلة، وابعت الطلب مرة واحدة.</p>
-  </section>
-  <div class="chips" id="chips"></div>
-  <section class="grid" id="grid"></section>
-</main>
-<a class="wa" href="https://wa.me/201119592645" target="_blank" rel="noopener">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11.5A8.5 8.5 0 0 1 6.7 18.8L4 20l1.3-2.6A8.5 8.5 0 1 1 20 11.5z"/></svg>
-  واتساب
-</a>
-<div class="shade" id="shade"></div>
-<aside class="drawer" id="drawer" aria-label="سلة التسوق">
-  <div class="d-head">
-    <strong>السلة</strong>
-    <button type="button" id="closeCart">إغلاق</button>
-  </div>
-  <div class="lines" id="lines"></div>
-  <form class="pay" id="pay">
-    <div class="total"><span>الإجمالي</span><span id="total">0 ج.م</span></div>
-    <label>الاسم<input name="name" autocomplete="name" required /></label>
-    <label>رقم الهاتف<input name="phone" inputmode="tel" autocomplete="tel" required /></label>
+  <aside class="side" id="side">
+    <div class="side-head">
+      <strong>السلة</strong>
+      <span class="count" id="count">0</span>
+      <button class="x" id="closeSide" type="button">إغلاق</button>
+    </div>
+    <div class="lines" id="lines"></div>
+    <div class="side-foot">
+      <div class="total"><span>الإجمالي</span><span id="total">0 ج.م</span></div>
+      <button class="done" id="toCheckout" type="button"><span class="long">إتمام الطلب</span><span class="short">إتمام</span></button>
+    </div>
+  </aside>
+</div>
+<div class="sheet" id="sheet">
+  <form class="box" id="pay">
+    <h2>بيانات التوصيل</h2>
+    <p class="muted" id="summary"></p>
+    <label>الاسم<input name="name" autocomplete="name" required></label>
+    <label>رقم الهاتف<input name="phone" inputmode="tel" autocomplete="tel" required></label>
     <label>العنوان<textarea name="address" required></textarea></label>
     <p class="err" id="err"></p>
-    <button class="go" type="submit">إتمام الطلب على واتساب</button>
+    <button class="go" type="submit">إرسال الطلب على واتساب</button>
+    <button type="button" id="cancelPay" style="min-height:44px;border:1px solid #2c2c2c;border-radius:12px;background:#141414;color:#f4f1ea">رجوع للسلة</button>
   </form>
-</aside>
+</div>
+<a class="wa" href="https://wa.me/201119592645" target="_blank" rel="noopener" aria-label="واتساب الدعم">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11.5A8.5 8.5 0 0 1 6.7 18.8L4 20l1.3-2.6A8.5 8.5 0 1 1 20 11.5z"/></svg>
+</a>
 <div class="toast" id="toast">اتضافت للسلة</div>
 <script>
 const WA = "201119592645";
@@ -327,11 +210,10 @@ const PRODUCTS = [
 const money = (n) => new Intl.NumberFormat("ar-EG").format(n) + " ج.م";
 let cart = JSON.parse(localStorage.getItem("gear-cart") || "[]");
 let filter = "الكل";
-
+const side = document.getElementById("side");
 function save() { localStorage.setItem("gear-cart", JSON.stringify(cart)); }
 function count() { return cart.reduce((s, i) => s + i.qty, 0); }
 function sum() { return cart.reduce((s, i) => s + i.qty * i.price, 0); }
-
 function renderChips() {
   const brands = ["الكل", ...new Set(PRODUCTS.map((p) => p.brand))];
   document.getElementById("chips").innerHTML = brands.map((b) =>
@@ -356,25 +238,18 @@ function renderGrid() {
     </article>`).join("");
 }
 function renderCart() {
-  const badge = document.getElementById("badge");
-  const n = count();
-  badge.textContent = n;
-  badge.classList.toggle("show", n > 0);
+  document.getElementById("count").textContent = count();
   document.getElementById("total").textContent = money(sum());
   const box = document.getElementById("lines");
-  if (!cart.length) {
-    box.innerHTML = `<p class="empty">السلة فاضية. ضيف قطع من المتجر.</p>`;
-    return;
-  }
+  if (!cart.length) { box.innerHTML = `<p class="empty">لسه مفيش قطع. ضيف من المتجر.</p>`; return; }
   box.innerHTML = cart.map((item) => `
     <div class="line">
       ${item.img ? `<img class="thumb" src="${item.img}" alt="">` : `<div class="thumb"></div>`}
       <div>
         <strong>${item.name}</strong>
         <div class="car">${item.car}</div>
-        <div>${money(item.price)}</div>
         <div class="qty">
-          <button type="button" data-dec="${item.id}">-</button>
+          <button type="button" data-dec="${item.id}">−</button>
           <span>${item.qty}</span>
           <button type="button" data-inc="${item.id}">+</button>
         </div>
@@ -386,49 +261,57 @@ function add(id) {
   const row = cart.find((x) => x.id === id);
   if (row) row.qty += 1;
   else cart.push({ id: p.id, name: p.name, car: p.car, price: p.price, img: p.img || "", qty: 1 });
-  save();
-  renderCart();
+  save(); renderCart();
   const toast = document.getElementById("toast");
   toast.style.display = "block";
   clearTimeout(add._t);
-  add._t = setTimeout(() => { toast.style.display = "none"; }, 1200);
+  add._t = setTimeout(() => { toast.style.display = "none"; }, 900);
 }
 function setQty(id, delta) {
   const row = cart.find((x) => x.id === id);
   if (!row) return;
   row.qty += delta;
   if (row.qty < 1) cart = cart.filter((x) => x.id !== id);
-  save();
-  renderCart();
+  save(); renderCart();
 }
-function openCart(open) {
-  document.getElementById("drawer").classList.toggle("open", open);
-  document.getElementById("shade").classList.toggle("open", open);
-}
-document.getElementById("chips").addEventListener("click", (e) => {
+document.getElementById("chips").onclick = (e) => {
   const b = e.target.closest("[data-brand]");
   if (!b) return;
   filter = b.dataset.brand;
-  renderChips();
-  renderGrid();
-});
-document.getElementById("grid").addEventListener("click", (e) => {
+  renderChips(); renderGrid();
+};
+document.getElementById("grid").onclick = (e) => {
   const b = e.target.closest("[data-add]");
   if (b) add(b.dataset.add);
-});
-document.getElementById("lines").addEventListener("click", (e) => {
+};
+document.getElementById("lines").onclick = (e) => {
   const inc = e.target.closest("[data-inc]");
   const dec = e.target.closest("[data-dec]");
   if (inc) setQty(inc.dataset.inc, 1);
   if (dec) setQty(dec.dataset.dec, -1);
-});
-document.getElementById("openCart").onclick = () => openCart(true);
-document.getElementById("closeCart").onclick = () => openCart(false);
-document.getElementById("shade").onclick = () => openCart(false);
-document.getElementById("pay").addEventListener("submit", (e) => {
+};
+side.querySelector(".side-head").onclick = (e) => {
+  if (e.target.closest("#closeSide")) { side.classList.remove("open"); return; }
+  if (matchMedia("(max-width: 799px)").matches) side.classList.add("open");
+};
+document.getElementById("closeSide").onclick = (e) => { e.stopPropagation(); side.classList.remove("open"); };
+document.getElementById("toCheckout").onclick = () => {
+  if (!cart.length) {
+    const toast = document.getElementById("toast");
+    toast.textContent = "السلة فاضية";
+    toast.style.display = "block";
+    setTimeout(() => { toast.style.display = "none"; toast.textContent = "اتضافت للسلة"; }, 1000);
+    return;
+  }
+  document.getElementById("summary").textContent = count() + " قطع — " + money(sum());
+  document.getElementById("err").textContent = "";
+  document.getElementById("sheet").classList.add("open");
+};
+document.getElementById("cancelPay").onclick = () => document.getElementById("sheet").classList.remove("open");
+document.getElementById("sheet").onclick = (e) => { if (e.target.id === "sheet") e.currentTarget.classList.remove("open"); };
+document.getElementById("pay").onsubmit = (e) => {
   e.preventDefault();
   const err = document.getElementById("err");
-  if (!cart.length) { err.textContent = "السلة فاضية"; return; }
   const fd = new FormData(e.target);
   const name = String(fd.get("name") || "").trim();
   const phone = String(fd.get("phone") || "").trim();
@@ -439,10 +322,8 @@ document.getElementById("pay").addEventListener("submit", (e) => {
   const lines = cart.map((i) => `- ${i.name} ${i.car} × ${i.qty} = ${i.price * i.qty}`).join("\n");
   const text = `طلب Gear Up\nالاسم: ${name}\nالهاتف: ${phone}\nالعنوان: ${address}\n${lines}\nالإجمالي: ${sum()} ج.م`;
   location.href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(text);
-});
-renderChips();
-renderGrid();
-renderCart();
+};
+renderChips(); renderGrid(); renderCart();
 </script>
 </body>
 </html>
