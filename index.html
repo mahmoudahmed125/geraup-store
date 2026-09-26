@@ -141,10 +141,32 @@
     .side.open .lines, .side.open .total, .side.open .side-head strong, .side.open .x { display: block; }
     .side.open .side-head { display: flex; }
   }
-  @media (min-width: 800px) {
-    .sheet { align-items: center; }
-    .box { border-radius: 18px; }
+  .gear {
+    margin-inline-start: auto;
+    width: 44px; height: 44px; border-radius: 14px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+    display: grid; place-items: center;
   }
+  .admin {
+    position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.72);
+    display: none; align-items: flex-end; justify-content: center;
+  }
+  .admin.open { display: flex; }
+  .panel {
+    width: min(560px, 100%); max-height: 92vh; overflow: auto;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 18px 18px 0 0; padding: 16px;
+  }
+  .panel h2 { margin-bottom: 8px; }
+  .panel label { display: grid; gap: 4px; font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+  .panel input, .panel textarea {
+    width: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+    border-radius: 12px; padding: 12px; font: inherit;
+  }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .edit { border: 1px solid var(--line); border-radius: 14px; padding: 10px; margin-bottom: 10px; }
+  .ghost { min-height: 44px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--fg); }
+  .note { color: var(--muted); font-size: 13px; margin: 8px 0; }
+  @media (min-width: 800px) { .admin { align-items: center; } .panel { border-radius: 18px; } }
 </style>
 </head>
 <body>
@@ -153,6 +175,9 @@
     <header class="top">
       <div class="mark">GEAR UP</div>
       <div><strong>STORE</strong><small>إكسسوارات سيارات</small></div>
+      <button class="gear" id="openAdmin" type="button" aria-label="لوحة التحكم">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c.3.6.9 1 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </button>
     </header>
     <main class="wrap">
       <section class="hero">
@@ -191,7 +216,24 @@
 <a class="wa" href="https://wa.me/201119592645" target="_blank" rel="noopener" aria-label="واتساب الدعم">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11.5A8.5 8.5 0 0 1 6.7 18.8L4 20l1.3-2.6A8.5 8.5 0 1 1 20 11.5z"/></svg>
 </a>
-<div class="toast" id="toast">اتضافت للسلة</div>
+<div class="admin" id="admin">
+  <div class="panel">
+    <form id="pinForm">
+      <h2>لوحة التحكم</h2>
+      <label>الرقم السري<input id="pinInput" inputmode="numeric" autocomplete="off" required></label>
+      <p class="err" id="pinErr"></p>
+      <button class="go" type="submit">دخول</button>
+      <button class="ghost" id="closeAdmin" type="button" style="width:100%;margin-top:8px">إغلاق</button>
+    </form>
+    <div id="dash" hidden>
+      <h2>المنتجات</h2>
+      <p class="note">الطلبات بتوصل على واتساب 01119592645 ومش متخزنة على الموقع. تغيير السعر والصورة من هنا يظهر للناس بعد حفظ الصفحة على الاستضافة.</p>
+      <div id="edits"></div>
+      <button class="go" id="addItem" type="button" style="width:100%">إضافة منتج</button>
+      <button class="ghost" id="closeDash" type="button" style="width:100%;margin-top:8px">إغلاق</button>
+    </div>
+  </div>
+</div>
 <script>
 const WA = "201119592645";
 const PRODUCTS = [
@@ -322,6 +364,94 @@ document.getElementById("pay").onsubmit = (e) => {
   const lines = cart.map((i) => `- ${i.name} ${i.car} × ${i.qty} = ${i.price * i.qty}`).join("\n");
   const text = `طلب Gear Up\nالاسم: ${name}\nالهاتف: ${phone}\nالعنوان: ${address}\n${lines}\nالإجمالي: ${sum()} ج.م`;
   location.href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(text);
+};
+const PIN_HASH = "d9d3af65ec1bfd17206a0fac9b3bb8f08d1ff6cac205a59027b021c29c0290a2";
+try {
+  const saved = JSON.parse(localStorage.getItem("gear-catalog") || "null");
+  if (Array.isArray(saved) && saved.length) {
+    PRODUCTS.splice(0, PRODUCTS.length, ...saved);
+  }
+} catch {}
+function persist(redraw) {
+  localStorage.setItem("gear-catalog", JSON.stringify(PRODUCTS));
+  renderChips(); renderGrid(); renderCart();
+  if (redraw) renderEdits();
+}
+function renderEdits() {
+  document.getElementById("edits").innerHTML = PRODUCTS.map((p, i) => `
+    <div class="edit">
+      <div class="row">
+        <label>الاسم<input data-f="name" data-i="${i}" value="${p.name}"></label>
+        <label>العربية<input data-f="car" data-i="${i}" value="${p.car}"></label>
+      </div>
+      <label>السعر<input data-f="price" data-i="${i}" inputmode="numeric" value="${p.price}"></label>
+      <label>صورة جديدة<input data-img="${i}" type="file" accept="image/*"></label>
+      <button class="ghost" type="button" data-del="${i}" style="width:100%">حذف</button>
+    </div>`).join("");
+}
+async function digest(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+function openAdmin(on) { document.getElementById("admin").classList.toggle("open", on); }
+document.getElementById("openAdmin").onclick = () => {
+  const ok = sessionStorage.getItem("gear-ok") === "1";
+  document.getElementById("pinForm").hidden = ok;
+  document.getElementById("dash").hidden = !ok;
+  if (ok) renderEdits();
+  openAdmin(true);
+};
+document.getElementById("closeAdmin").onclick = () => openAdmin(false);
+document.getElementById("closeDash").onclick = () => openAdmin(false);
+document.getElementById("pinForm").onsubmit = async (e) => {
+  e.preventDefault();
+  const pin = document.getElementById("pinInput").value.trim();
+  if (await digest(pin) !== PIN_HASH) {
+    document.getElementById("pinErr").textContent = "الرقم غلط";
+    return;
+  }
+  sessionStorage.setItem("gear-ok", "1");
+  document.getElementById("pinErr").textContent = "";
+  document.getElementById("pinForm").hidden = true;
+  document.getElementById("dash").hidden = false;
+  renderEdits();
+};
+document.getElementById("edits").onclick = (e) => {
+  const del = e.target.closest("[data-del]");
+  if (!del) return;
+  PRODUCTS.splice(Number(del.dataset.del), 1);
+  persist(true);
+};
+document.getElementById("edits").onchange = async (e) => {
+  const field = e.target.closest("[data-f]");
+  const file = e.target.closest("[data-img]");
+  if (field) {
+    const item = PRODUCTS[Number(field.dataset.i)];
+    if (field.dataset.f === "price") item.price = Number(field.value) || 0;
+    else item[field.dataset.f] = field.value.trim();
+    if (field.dataset.f === "car") item.brand = item.car.split(" ")[0] || "متعدد";
+    persist();
+  }
+  if (file && file.files[0]) {
+    const data = await new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => {
+        const scale = Math.min(1, 900 / Math.max(img.width, img.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", 0.72));
+      };
+      img.src = URL.createObjectURL(file.files[0]);
+    });
+    PRODUCTS[Number(file.dataset.img)].img = data;
+    persist(true);
+  }
+};
+document.getElementById("addItem").onclick = () => {
+  PRODUCTS.push({ id: "p" + Date.now(), name: "منتج جديد", car: "BMW", brand: "BMW", price: 0 });
+  persist(true);
 };
 renderChips(); renderGrid(); renderCart();
 </script>
