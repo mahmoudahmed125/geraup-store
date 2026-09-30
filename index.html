@@ -227,9 +227,10 @@
     </form>
     <div id="dash" hidden>
       <h2>المنتجات</h2>
-      <p class="note">الطلبات بتوصل على واتساب 01119592645 ومش متخزنة على الموقع. تغيير السعر والصورة من هنا يظهر للناس بعد حفظ الصفحة على الاستضافة.</p>
+      <p class="note">الصور والأسعار اللي هنا محفوظة على الموبايل ده. عشان تظهر لكل الزباين، دوس تنزيل ملف المنتجات وابعت الملف.</p>
       <div id="edits"></div>
       <button class="go" id="addItem" type="button" style="width:100%">إضافة منتج</button>
+      <button class="go" id="exportCatalog" type="button" style="width:100%;margin-top:8px;background:#f4f1ea;color:#070707">تنزيل ملف المنتجات</button>
       <button class="ghost" id="closeDash" type="button" style="width:100%;margin-top:8px">إغلاق</button>
     </div>
   </div>
@@ -366,14 +367,22 @@ document.getElementById("pay").onsubmit = (e) => {
   location.href = "https://wa.me/" + WA + "?text=" + encodeURIComponent(text);
 };
 const PIN_HASH = "d9d3af65ec1bfd17206a0fac9b3bb8f08d1ff6cac205a59027b021c29c0290a2";
+let fromPhone = false;
 try {
   const saved = JSON.parse(localStorage.getItem("gear-catalog") || "null");
   if (Array.isArray(saved) && saved.length) {
     PRODUCTS.splice(0, PRODUCTS.length, ...saved);
+    fromPhone = true;
   }
 } catch {}
 function persist(redraw) {
-  localStorage.setItem("gear-catalog", JSON.stringify(PRODUCTS));
+  try {
+    localStorage.setItem("gear-catalog", JSON.stringify(PRODUCTS));
+  } catch {
+    const toast = document.getElementById("toast");
+    toast.textContent = "الصور كبيرة وماتحفظتش";
+    toast.style.display = "block";
+  }
   renderChips(); renderGrid(); renderCart();
   if (redraw) renderEdits();
 }
@@ -436,12 +445,12 @@ document.getElementById("edits").onchange = async (e) => {
     const data = await new Promise((resolve) => {
       const img = new Image();
       img.onload = () => {
-        const scale = Math.min(1, 900 / Math.max(img.width, img.height));
+        const scale = Math.min(1, 640 / Math.max(img.width, img.height));
         const canvas = document.createElement("canvas");
         canvas.width = Math.round(img.width * scale);
         canvas.height = Math.round(img.height * scale);
         canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL("image/jpeg", 0.72));
+        resolve(canvas.toDataURL("image/jpeg", 0.55));
       };
       img.src = URL.createObjectURL(file.files[0]);
     });
@@ -453,7 +462,24 @@ document.getElementById("addItem").onclick = () => {
   PRODUCTS.push({ id: "p" + Date.now(), name: "منتج جديد", car: "BMW", brand: "BMW", price: 0 });
   persist(true);
 };
+document.getElementById("exportCatalog").onclick = () => {
+  const blob = new Blob([JSON.stringify(PRODUCTS)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "gear-catalog.json";
+  a.click();
+};
 renderChips(); renderGrid(); renderCart();
+if (!fromPhone) {
+  fetch("/catalog.json", { cache: "no-store" })
+    .then((res) => (res.ok ? res.json() : null))
+    .then((data) => {
+      if (!Array.isArray(data) || !data.length) return;
+      PRODUCTS.splice(0, PRODUCTS.length, ...data);
+      renderChips(); renderGrid(); renderCart();
+    })
+    .catch(() => {});
+}
 </script>
 </body>
 </html>
