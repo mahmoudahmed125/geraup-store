@@ -227,10 +227,10 @@
     </form>
     <div id="dash" hidden>
       <h2>المنتجات</h2>
-      <p class="note">الصور والأسعار اللي هنا محفوظة على الموبايل ده. عشان تظهر لكل الزباين، دوس تنزيل ملف المنتجات وابعت الملف.</p>
+      <p class="note" id="saveMsg">بعد ما تظبط الاسم والسعر والصورة، دوس حفظ. كده بتتخزن على الموقع وتظهر على أي تلفون.</p>
       <div id="edits"></div>
-      <button class="go" id="addItem" type="button" style="width:100%">إضافة منتج</button>
-      <button class="go" id="exportCatalog" type="button" style="width:100%;margin-top:8px;background:#f4f1ea;color:#070707">تنزيل ملف المنتجات</button>
+      <button class="go" id="savePublic" type="button" style="width:100%">حفظ</button>
+      <button class="go" id="addItem" type="button" style="width:100%;margin-top:8px">إضافة منتج</button>
       <button class="ghost" id="closeDash" type="button" style="width:100%;margin-top:8px">إغلاق</button>
     </div>
   </div>
@@ -462,12 +462,52 @@ document.getElementById("addItem").onclick = () => {
   PRODUCTS.push({ id: "p" + Date.now(), name: "منتج جديد", car: "BMW", brand: "BMW", price: 0 });
   persist(true);
 };
-document.getElementById("exportCatalog").onclick = () => {
-  const blob = new Blob([JSON.stringify(PRODUCTS)], { type: "application/json" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "gear-catalog.json";
-  a.click();
+const HOOK = "https://webhook.site/ff2a7649-0fd3-4b19-a8d3-9b7578dc2c33";
+function shrinkImage(dataUrl) {
+  return new Promise((resolve) => {
+    if (!dataUrl || !dataUrl.startsWith("data:image") || dataUrl.length < 90000) {
+      resolve(dataUrl || "");
+      return;
+    }
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, 480 / Math.max(img.width, img.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+      canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL("image/jpeg", 0.5));
+    };
+    img.onerror = () => resolve(dataUrl);
+    img.src = dataUrl;
+  });
+}
+document.getElementById("savePublic").onclick = async () => {
+  const btn = document.getElementById("savePublic");
+  const msg = document.getElementById("saveMsg");
+  btn.disabled = true;
+  msg.textContent = "بيحفظ الصور على الموقع...";
+  try {
+    for (const item of PRODUCTS) item.img = await shrinkImage(item.img || "");
+    persist(true);
+    const body = new FormData();
+    body.append("reqtype", "fileupload");
+    body.append("time", "72h");
+    body.append("fileToUpload", new Blob([JSON.stringify(PRODUCTS)], { type: "application/json" }), "gear-catalog.json");
+    const uploaded = await fetch("https://litterbox.catbox.moe/resources/internals/api.php", { method: "POST", body });
+    const url = (await uploaded.text()).trim();
+    if (!url.startsWith("http")) throw new Error(url || "upload");
+    const posted = await fetch(HOOK, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, at: Date.now() }),
+    });
+    if (!posted.ok) throw new Error("hook");
+    msg.textContent = "اتحفظ. هتظهر المنتجات والصور والسعر على أي تلفون خلال دقايق. اعمل تحديث للصفحة.";
+  } catch (err) {
+    msg.textContent = "ماتحفظش على الموقع. تأكد من النت ودوس حفظ تاني.";
+  }
+  btn.disabled = false;
 };
 renderChips(); renderGrid(); renderCart();
 if (!fromPhone) {
