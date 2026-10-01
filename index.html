@@ -23,11 +23,11 @@
   button, a { font: inherit; }
   button { cursor: pointer; }
   img { display: block; max-width: 100%; }
-  .app { display: grid; grid-template-columns: minmax(0, 1fr) 300px; min-height: 100vh; }
+  .app { display: grid; grid-template-columns: minmax(0, 1fr) 340px; min-height: 100vh; }
   .top {
     position: sticky; top: 0; z-index: 5;
     display: flex; align-items: center; gap: 10px;
-    padding: 10px 16px; background: rgba(7,7,7,.94);
+    padding: 12px 16px; background: rgba(7,7,7,.94);
     border-bottom: 1px solid var(--line);
   }
   .mark {
@@ -38,12 +38,12 @@
   .top small { display: block; color: var(--muted); font-size: 12px; }
   .wrap { width: min(860px, 100%); margin: 0 auto; padding: 16px 16px 88px; }
   .hero {
-    border: 1px solid var(--line); border-radius: 20px; padding: 18px 16px; margin-bottom: 12px;
-    background: radial-gradient(circle at 100% 0%, rgba(225,6,0,.32), transparent 42%), var(--surface);
+    border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 14px;
+    background: #121212;
   }
-  .hero h1 { font-family: Oswald, Cairo, sans-serif; font-size: clamp(30px, 8vw, 52px); line-height: 1.05; }
+  .hero h1 { font-family: Oswald, Cairo, sans-serif; font-size: clamp(28px, 6vw, 42px); line-height: 1.05; letter-spacing: .02em; }
   .hero h1 span { color: var(--red); }
-  .hero p { color: var(--muted); margin-top: 8px; }
+  .hero p { color: var(--muted); margin-top: 6px; font-size: 14px; }
   .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; }
   .chip { flex: 0 0 auto; min-height: 40px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); padding: 8px 14px; font-weight: 800; }
   .chip.on { background: var(--red); color: var(--ink); border-color: var(--red); }
@@ -68,6 +68,14 @@
   .side-head, .side-foot { padding: 14px; border-bottom: 1px solid var(--line); }
   .side-foot { border-bottom: 0; border-top: 1px solid var(--line); display: grid; gap: 8px; }
   .side-head { display: flex; justify-content: space-between; align-items: center; font-weight: 800; }
+  .side-head small { display: block; color: var(--muted); font-size: 12px; font-weight: 700; }
+  .payform { display: grid; gap: 8px; }
+  .payform label { display: grid; gap: 4px; font-size: 12px; font-weight: 800; }
+  .payform input, .payform textarea {
+    width: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+    border-radius: 10px; padding: 10px; font: inherit;
+  }
+  .payform textarea { min-height: 64px; resize: vertical; }
   .count { min-width: 28px; height: 28px; border-radius: 999px; background: var(--red); color: var(--ink); display: grid; place-items: center; font-size: 13px; }
   .lines { flex: 1; overflow: auto; padding: 8px 14px; }
   .line { display: grid; grid-template-columns: 56px 1fr; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--line); }
@@ -110,36 +118,14 @@
   }
   .short { display: none; }
   @media (max-width: 799px) {
-    .app { display: block; }
-    .wrap { padding-inline-end: 112px; padding-bottom: 24px; }
+    .app { grid-template-columns: minmax(0, 1fr) 168px; }
+    .wrap { padding: 12px 10px 20px; }
+    .hero { display: none; }
     .grid { grid-template-columns: 1fr; }
-    .long { display: none; }
-    .short { display: inline; }
-    .side {
-      position: fixed;
-      top: 74px;
-      bottom: 16px;
-      inset-inline-end: 8px;
-      width: 96px;
-      height: auto;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      box-shadow: 0 12px 28px rgba(0,0,0,.45);
-      align-items: center;
-      padding-top: 8px;
-    }
-    .lines, .total, .side-head strong { display: none; }
-    .side-head, .side-foot { border: 0; padding: 8px; width: 100%; }
-    .side-foot { margin-top: auto; }
-    .done { min-height: 48px; }
-    .side.open {
-      top: 0; bottom: 0; inset-inline-end: 0; width: min(100%, 380px);
-      height: 100vh; border-radius: 0; align-items: stretch;
-    }
-    .side.open .long { display: inline; }
-    .side.open .short { display: none; }
-    .side.open .lines, .side.open .total, .side.open .side-head strong, .side.open .x { display: block; }
-    .side.open .side-head { display: flex; }
+    .payform { display: none; }
+    .side.paying { position: fixed; inset: 0 auto 0 0; width: min(100%, 420px); height: 100vh; }
+    .side.paying .payform { display: grid; }
+    .side.paying .x { display: inline-grid; }
   }
   .gear {
     margin-inline-start: auto;
@@ -166,7 +152,10 @@
   .edit { border: 1px solid var(--line); border-radius: 14px; padding: 10px; margin-bottom: 10px; }
   .ghost { min-height: 44px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--fg); }
   .note { color: var(--muted); font-size: 13px; margin: 8px 0; }
-  @media (min-width: 800px) { .admin { align-items: center; } .panel { border-radius: 18px; } }
+  @media (min-width: 800px) {
+    #toCheckout { display: none; }
+    .x { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -182,7 +171,7 @@
     <main class="wrap">
       <section class="hero">
         <h1>CAR<br><span>ACCESSORIES</span></h1>
-        <p>ضيف كل القطع للسلة. الاسم والعنوان في الآخر مرة واحدة.</p>
+        <p>اختار القطع. الطلب مفتوح على الجنب، والبيانات في الآخر.</p>
       </section>
       <div class="chips" id="chips"></div>
       <section class="grid" id="grid"></section>
@@ -190,28 +179,23 @@
   </div>
   <aside class="side" id="side">
     <div class="side-head">
-      <strong>السلة</strong>
+      <div><strong>طلبك</strong><small>مفتوح طول ما بتختار</small></div>
       <span class="count" id="count">0</span>
-      <button class="x" id="closeSide" type="button">إغلاق</button>
+      <button class="x" id="closeSide" type="button">رجوع</button>
     </div>
     <div class="lines" id="lines"></div>
     <div class="side-foot">
       <div class="total"><span>الإجمالي</span><span id="total">0 ج.م</span></div>
-      <button class="done" id="toCheckout" type="button"><span class="long">إتمام الطلب</span><span class="short">إتمام</span></button>
+      <form class="payform" id="pay">
+        <label>الاسم<input name="name" autocomplete="name" required></label>
+        <label>الهاتف<input name="phone" inputmode="tel" autocomplete="tel" required></label>
+        <label>العنوان<textarea name="address" required></textarea></label>
+        <p class="err" id="err"></p>
+        <button class="go" type="submit">إرسال الطلب على واتساب</button>
+      </form>
+      <button class="done" id="toCheckout" type="button">إكمال الطلب</button>
     </div>
   </aside>
-</div>
-<div class="sheet" id="sheet">
-  <form class="box" id="pay">
-    <h2>بيانات التوصيل</h2>
-    <p class="muted" id="summary"></p>
-    <label>الاسم<input name="name" autocomplete="name" required></label>
-    <label>رقم الهاتف<input name="phone" inputmode="tel" autocomplete="tel" required></label>
-    <label>العنوان<textarea name="address" required></textarea></label>
-    <p class="err" id="err"></p>
-    <button class="go" type="submit">إرسال الطلب على واتساب</button>
-    <button type="button" id="cancelPay" style="min-height:44px;border:1px solid #2c2c2c;border-radius:12px;background:#141414;color:#f4f1ea">رجوع للسلة</button>
-  </form>
 </div>
 <a class="wa" href="https://wa.me/201119592645" target="_blank" rel="noopener" aria-label="واتساب الدعم">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11.5A8.5 8.5 0 0 1 6.7 18.8L4 20l1.3-2.6A8.5 8.5 0 1 1 20 11.5z"/></svg>
@@ -276,7 +260,7 @@ function renderGrid() {
         <p class="car">${p.car}</p>
         <h2>${p.name}</h2>
         <p class="price">${money(p.price)}</p>
-        <button class="add" type="button" data-add="${p.id}">أضف للسلة</button>
+        <button class="add" type="button" data-add="${p.id}">أضف للطلب</button>
       </div>
     </article>`).join("");
 }
@@ -306,6 +290,7 @@ function add(id) {
   else cart.push({ id: p.id, name: p.name, car: p.car, price: p.price, img: p.img || "", qty: 1 });
   save(); renderCart();
   const toast = document.getElementById("toast");
+  toast.textContent = "اتضاف للطلب";
   toast.style.display = "block";
   clearTimeout(add._t);
   add._t = setTimeout(() => { toast.style.display = "none"; }, 900);
@@ -334,24 +319,20 @@ document.getElementById("lines").onclick = (e) => {
   if (dec) setQty(dec.dataset.dec, -1);
 };
 side.querySelector(".side-head").onclick = (e) => {
-  if (e.target.closest("#closeSide")) { side.classList.remove("open"); return; }
-  if (matchMedia("(max-width: 799px)").matches) side.classList.add("open");
+  if (e.target.closest("#closeSide")) side.classList.remove("paying");
 };
-document.getElementById("closeSide").onclick = (e) => { e.stopPropagation(); side.classList.remove("open"); };
+document.getElementById("closeSide").onclick = (e) => { e.stopPropagation(); side.classList.remove("paying"); };
 document.getElementById("toCheckout").onclick = () => {
   if (!cart.length) {
     const toast = document.getElementById("toast");
-    toast.textContent = "السلة فاضية";
+    toast.textContent = "الطلب فاضي";
     toast.style.display = "block";
-    setTimeout(() => { toast.style.display = "none"; toast.textContent = "اتضافت للسلة"; }, 1000);
+    setTimeout(() => { toast.style.display = "none"; toast.textContent = "اتضاف للطلب"; }, 1000);
     return;
   }
-  document.getElementById("summary").textContent = count() + " قطع — " + money(sum());
   document.getElementById("err").textContent = "";
-  document.getElementById("sheet").classList.add("open");
+  side.classList.add("paying");
 };
-document.getElementById("cancelPay").onclick = () => document.getElementById("sheet").classList.remove("open");
-document.getElementById("sheet").onclick = (e) => { if (e.target.id === "sheet") e.currentTarget.classList.remove("open"); };
 document.getElementById("pay").onsubmit = (e) => {
   e.preventDefault();
   const err = document.getElementById("err");
