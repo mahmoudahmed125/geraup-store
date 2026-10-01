@@ -1,0 +1,13 @@
+{
+  "name": "geraup-store",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "24.x" },
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "dev": "node scripts/dev.mjs"
+  },
+  "dependencies": { "@vercel/blob": "2.7.0" }
+}
