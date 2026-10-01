@@ -507,23 +507,28 @@ document.getElementById("savePublic").onclick = async () => {
       body: JSON.stringify({ url, at: Date.now() }),
     });
     if (!posted.ok) throw new Error("hook");
-    msg.textContent = "اتحفظ. هتظهر المنتجات والصور والسعر على أي تلفون خلال دقايق. اعمل تحديث للصفحة.";
+    msg.textContent = "اتحفظ. حدّث الصفحة، المنتجات هتظهر على طول على أي تلفون.";
   } catch (err) {
     msg.textContent = "ماتحفظش على الموقع. تأكد من النت ودوس حفظ تاني.";
   }
   btn.disabled = false;
 };
 renderChips(); renderGrid(); renderCart();
-if (!fromPhone) {
-  fetch("/catalog.json", { cache: "no-store" })
-    .then((res) => (res.ok ? res.json() : null))
-    .then((data) => {
-      if (!Array.isArray(data) || !data.length) return;
-      PRODUCTS.splice(0, PRODUCTS.length, ...data);
-      renderChips(); renderGrid(); renderCart();
-    })
-    .catch(() => {});
+function applyCatalog(data) {
+  if (!Array.isArray(data) || !data.length) return false;
+  PRODUCTS.splice(0, PRODUCTS.length, ...data);
+  renderChips(); renderGrid(); renderCart();
+  return true;
 }
+fetch("/api/catalog", { cache: "no-store" })
+  .then((res) => (res.ok ? res.json() : null))
+  .then((data) => {
+    if (applyCatalog(data)) return;
+    return fetch("/catalog.json", { cache: "no-store" }).then((res) => (res.ok ? res.json() : null)).then(applyCatalog);
+  })
+  .catch(() => {
+    fetch("/catalog.json", { cache: "no-store" }).then((res) => (res.ok ? res.json() : null)).then(applyCatalog).catch(() => {});
+  });
 </script>
 </body>
 </html>
