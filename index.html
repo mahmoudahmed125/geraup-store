@@ -485,6 +485,10 @@ function shrinkImage(dataUrl) {
 document.getElementById("savePublic").onclick = async () => {
   const btn = document.getElementById("savePublic");
   const msg = document.getElementById("saveMsg");
+  if (!PRODUCTS.length) {
+    msg.textContent = "مفيش منتجات. ضيف منتج وصورة وسعر الأول، ومتدوسش حفظ والسلة فاضية.";
+    return;
+  }
   btn.disabled = true;
   msg.textContent = "بيحفظ الصور على الموقع...";
   try {
